@@ -1,3 +1,8 @@
+# ml4bio
+
+This packge is a graphical interface wrapper for sklearn classification.
+It is intended to be used with the [ml-bio-workshop](https://github.com/gitter-lab/ml-bio-workshop) training materials.
+
 ## Python environment
 
 Requires:
@@ -17,6 +22,8 @@ The full Anaconda installation also provides all required dependencies.
 
 ## Running
 
+*These instructions are stale and will be updated.*
+
 `python3 ml4bio.py` or if you installed the `ml4bio` conda environment use `python ml4bio.py`.
 
 `ml4bio_conda.bat` is a Windows batch file.
@@ -26,7 +33,7 @@ If the `ml4bio` environment does not exist, the batch file creates it and instal
 `ml4bio_conda.sh` is a bash shell script for Linux and Mac OS, but it has not been tested.
 
 ## Third party materials
-The icons in the `icons` directory were downloaded from http://thenounproject.com under the Creative Commons license.
+The icons in the `ml4bio/icons` directory were downloaded from http://thenounproject.com under the Creative Commons license.
 Instructions on how to give credit to the creators: [link](https://thenounproject.zendesk.com/hc/en-us/articles/200509928-How-do-I-give-creators-credit-in-my-work-)
 
 Add this attribution where appropriate:
