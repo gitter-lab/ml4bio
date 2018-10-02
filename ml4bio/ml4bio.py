@@ -14,9 +14,9 @@ from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTr
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
-from data import Data
-from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-from model_metrics import ModelMetrics
+from ml4bio.data import Data
+from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+from ml4bio.model_metrics import ModelMetrics
 
 class Training_thread(QThread):
     """
@@ -2214,7 +2214,13 @@ class App(QMainWindow):
 
         self.show()
 
-if __name__ == '__main__':
+def main():
+    """
+    Entry point for console_scripts in setup.py.
+    """
     app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()

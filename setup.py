@@ -52,7 +52,9 @@ setuptools.setup(
         'matplotlib',
         'numpy',
         'pandas',
-        'pyqt>=5',
+        # The package name is PyQt5 on PyPI https://pypi.org/project/PyQt5/
+        # pip does not recognize pyqt
+        #'pyqt>=5',
         'scikit-learn',
         'scipy',
     ],
@@ -62,11 +64,11 @@ setuptools.setup(
     },
 
     # Create command line script
-#    entry_points={
-#        'console_scripts': [
-#            'ml4bio = ml4bio:main',
-#        ],
-#    },
+    entry_points={
+        'console_scripts': [
+            'ml4bio = ml4bio.ml4bio:main',
+        ],
+    },
 
     # Include package data files from MANIFEST.in
     include_package_data=True,
