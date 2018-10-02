@@ -52,7 +52,7 @@ setuptools.setup(
         'matplotlib',
         'numpy',
         'pandas',
-        'pyqt',
+        'pyqt>=5',
         'scikit-learn',
         'scipy',
     ],
