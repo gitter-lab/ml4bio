@@ -1,0 +1,21 @@
+language: python
+
+python:
+  - "3.5"
+
+notifications:
+  email: false
+
+before_install:
+  - wget https://repo.continuum.io/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/anaconda
+  - export PATH="$HOME/anaconda/bin:$PATH"
+  - conda env create -f scripts/conda_env.yml
+  - conda activate ml4bio
+
+install:
+  - pip install .
+
+script:
+  # no test cases yet so only test the import
+  - python -c "import ml4bio"
