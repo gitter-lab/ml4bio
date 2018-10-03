@@ -1,4 +1,5 @@
 # ml4bio
+[![Build Status](https://travis-ci.org/gitter-lab/ml4bio.svg?branch=master)](https://travis-ci.org/gitter-lab/ml4bio)
 
 This packge is a graphical interface wrapper for sklearn classification.
 It is intended to be used with the [ml-bio-workshop](https://github.com/gitter-lab/ml-bio-workshop) training materials.
