@@ -23,15 +23,8 @@ The full Anaconda installation also provides all required dependencies.
 
 ## Running
 
-*These instructions are stale and will be updated.*
-
-`python3 ml4bio.py` or if you installed the `ml4bio` conda environment use `python ml4bio.py`.
-
-`ml4bio_conda.bat` is a Windows batch file.
-If Anaconda is already installed, the GUI can be launched by double-clicking the batch file.
-If the `ml4bio` environment does not exist, the batch file creates it and installs the required Python packages.
-
-`ml4bio_conda.sh` is a bash shell script for Linux and Mac OS, but it has not been tested.
+The ml-bio-workshop repository provides [scripts](https://github.com/gitter-lab/ml-bio-workshop/tree/master/scripts) for installing and launching the ml4bio GUI.
+Once the ml4bio package and its dependencies have been installed, the GUI can be launched using the `ml4bio` command from the command line.
 
 ## Third party materials
 The icons in the `ml4bio/icons` directory were downloaded from http://thenounproject.com under the Creative Commons license.
