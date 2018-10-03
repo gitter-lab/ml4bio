@@ -18,4 +18,4 @@ install:
 
 script:
   # no test cases yet so only test the import
-  - python -c "import ml4bio"
+  - python -c "import ml4bio; print(ml4bio.__version__)"
