@@ -33,4 +33,4 @@ The icons in the `ml4bio/icons` directory were downloaded from http://thenounpro
 Instructions on how to give credit to the creators: [link](https://thenounproject.zendesk.com/hc/en-us/articles/200509928-How-do-I-give-creators-credit-in-my-work-)
 
 Add this attribution where appropriate:
-Created by sachin modgekar from Noun Project.
+> Created by sachin modgekar from Noun Project.
