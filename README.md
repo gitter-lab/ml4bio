@@ -1,5 +1,6 @@
 # ml4bio
-[![Build Status](https://travis-ci.org/gitter-lab/ml4bio.svg?branch=master)](https://travis-ci.org/gitter-lab/ml4bio)
+[![Build status](https://travis-ci.org/gitter-lab/ml4bio.svg?branch=master)](https://travis-ci.org/gitter-lab/ml4bio)
+[![Build status](https://ci.appveyor.com/api/projects/status/c128ywv2o2156k0k/branch/master?svg=true)](https://ci.appveyor.com/project/gitter-lab/ml4bio/branch/master)
 
 This packge is a graphical interface wrapper for sklearn classification.
 It is intended to be used with the [ml-bio-workshop](https://github.com/gitter-lab/ml-bio-workshop) training materials.
