@@ -581,7 +581,8 @@ class App(QMainWindow):
                 self.splitFrame.setEnabled(True)                # allow user to split labeled data into training and test sets.
                 self.validationFrame.setEnabled(True)           # allow user to select validation method.
                 self.dataNextPushButton.setEnabled(True)        # allow user to proceed to next step (i.e. train classifiers).
-            
+                self.predictionPushButton.setEnabled(False)     # previously loaded unlabeled data is cleared
+
             # add unlabeled data (optional).
             else:
                 try:
@@ -879,7 +880,7 @@ class App(QMainWindow):
         # reset the software to initial state
         if option == 'all':
             self.clear('test')
-            self.clear('train')
+            self.clear('models')
             self.data = None
             self.val_method = 'cv'
             self.tested = False
@@ -898,7 +899,7 @@ class App(QMainWindow):
             self.validationCheckBox.setChecked(True)
 
         # remove trained classifiers
-        if option == 'train':
+        if option == 'models':
             self.curr_model = None
             self.models.clear()
             self.models_table.setRowCount(0)
@@ -912,6 +913,17 @@ class App(QMainWindow):
             self.confusionMatrixRadioButton.setChecked(True)
             self.leftPanel.setCurrentIndex(0)
             Model.clear()
+
+        # reach here when user wants to change data during training
+        if option == 'train':
+            msg = 'The trained classifiers will be cleared. '
+            msg += 'Do you want to proceed?'
+            self.test_box.setText(msg)
+            val = self.test_box.exec_()
+            if val == QMessageBox.Cancel:
+                return
+
+            self.clear('models')
 
         # deselect classifier for testing
         elif option == 'test':
