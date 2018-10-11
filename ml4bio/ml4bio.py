@@ -1394,7 +1394,7 @@ class App(QMainWindow):
 
         ########## 1st page: data loading and splitting ##########
         self.dataPage = QWidget()
-        self.openIcon = QIcon('icons/open.png')
+        self.openIcon = QIcon('ml4bio/icons/open.png')
         self.dataPageLayout = QVBoxLayout(self.dataPage)
         self.dataPageTitle = self.page_title('Step 1: Select Data', self.dataPage)
         self.dataPageLayout.addWidget(self.dataPageTitle)
@@ -1572,13 +1572,13 @@ class App(QMainWindow):
         self.modelPageLayout.addWidget(self.paramStack)
 
         ## initial empty page
-        self.noneIcon = QIcon('icons/none.png')
+        self.noneIcon = QIcon('ml4bio/icons/none.png')
         self.classTypeComboBox.addItem(self.noneIcon, '-------- select --------')
         self.initPage = QWidget()
         self.paramStack.addWidget(self.initPage)
 
         ## decision tree
-        self.dtIcon = QIcon('icons/dt.png')
+        self.dtIcon = QIcon('ml4bio/icons/dt.png')
         self.classTypeComboBox.addItem(self.dtIcon, 'Decision Tree')
         self.dtPage = QWidget()
         self.paramStack.addWidget(self.dtPage)
@@ -1614,7 +1614,7 @@ class App(QMainWindow):
         self.dtPageLayout.addWidget(self.dtDoc)
 
         ## Random forest
-        self.rfIcon = QIcon('icons/rf.png')
+        self.rfIcon = QIcon('ml4bio/icons/rf.png')
         self.classTypeComboBox.addItem(self.rfIcon, 'Random Forest')
         self.rfPage = QWidget()
         self.paramStack.addWidget(self.rfPage)
@@ -1660,7 +1660,7 @@ class App(QMainWindow):
         self.rfPageLayout.addWidget(self.rfDoc)
 
         ## K-nearest neighbors
-        self.knnIcon = QIcon('icons/knn.png')
+        self.knnIcon = QIcon('ml4bio/icons/knn.png')
         self.classTypeComboBox.addItem(self.knnIcon, 'K-Nearest Neighbors')
         self.knnPage = QWidget()
         self.paramStack.addWidget(self.knnPage)
@@ -1694,7 +1694,7 @@ class App(QMainWindow):
         self.knnPageLayout.addWidget(self.knnDoc)
 
         ## Logistic regression
-        self.lrIcon = QIcon('icons/lr.png')
+        self.lrIcon = QIcon('ml4bio/icons/lr.png')
         self.classTypeComboBox.addItem(self.lrIcon, 'Logistic Regression')
         self.lrPage = QWidget()
         self.paramStack.addWidget(self.lrPage)
@@ -1761,7 +1761,7 @@ class App(QMainWindow):
         self.lrPageLayout.addWidget(self.lrDoc)
 
         ## Neural Network
-        self.nnIcon = QIcon('icons/nn.png')
+        self.nnIcon = QIcon('ml4bio/icons/nn.png')
         self.classTypeComboBox.addItem(self.nnIcon, 'Neural Network')
         self.nnPage = QWidget()
         self.paramStack.addWidget(self.nnPage)
@@ -1826,7 +1826,7 @@ class App(QMainWindow):
         self.nnPageLayout.addWidget(self.nnDoc)
 
         ## SVM
-        self.svmIcon = QIcon('icons/svm.png')
+        self.svmIcon = QIcon('ml4bio/icons/svm.png')
         self.classTypeComboBox.addItem(self.svmIcon, 'SVM')
         self.svmPage = QWidget()
         self.paramStack.addWidget(self.svmPage)
@@ -1884,7 +1884,7 @@ class App(QMainWindow):
         self.svmPageLayout.addWidget(self.svmDoc)
 
         ## Naive bayes
-        self.nbIcon = QIcon('icons/nb.png')
+        self.nbIcon = QIcon('ml4bio/icons/nb.png')
         self.classTypeComboBox.addItem(self.nbIcon, 'Naive Bayes')
         self.nbPage = QWidget()
         self.paramStack.addWidget(self.nbPage)
