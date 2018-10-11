@@ -576,6 +576,7 @@ class App(QMainWindow):
                 # once labeled data is successfully imported, 
                 # enable subsequent operations.
                 self.labeledFileDisplay.setText(self.data.name('labeled'))
+                self.unlabeledFileDisplay.setText('')
                 self.unlabeledFilePushButton.setEnabled(True)   # allow user to upload unlabeled data.
                 self.splitFrame.setEnabled(True)                # allow user to split labeled data into training and test sets.
                 self.validationFrame.setEnabled(True)           # allow user to select validation method.
