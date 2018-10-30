@@ -1,5 +1,5 @@
 # ml4bio
-[![PyPI](https://img.shields.io/pypi/v/ml4bio-blue.svg)](https://pypi.org/project/ml4bio/)
+[![PyPI](https://img.shields.io/pypi/v/ml4bio.svg)](https://pypi.org/project/ml4bio/)
 [![Build status](https://travis-ci.org/gitter-lab/ml4bio.svg?branch=master)](https://travis-ci.org/gitter-lab/ml4bio)
 [![Build status](https://ci.appveyor.com/api/projects/status/c128ywv2o2156k0k/branch/master?svg=true)](https://ci.appveyor.com/project/gitter-lab/ml4bio/branch/master)
 
