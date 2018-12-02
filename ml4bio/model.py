@@ -10,8 +10,8 @@ from matplotlib import pyplot as plt
 from matplotlib import rcParams
 from matplotlib.colors import ListedColormap
 
-# from ml4bio.model_metrics import ModelMetrics
-from model_metrics import ModelMetrics
+from ml4bio.model_metrics import ModelMetrics
+# from model_metrics import ModelMetrics
 
 class Model:
 	"""
