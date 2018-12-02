@@ -10,7 +10,8 @@ from matplotlib import pyplot as plt
 from matplotlib import rcParams
 from matplotlib.colors import ListedColormap
 
-from ml4bio.model_metrics import ModelMetrics
+# from ml4bio.model_metrics import ModelMetrics
+from model_metrics import ModelMetrics
 
 class Model:
 	"""
@@ -415,7 +416,7 @@ class Model:
 			cm_pts = ListedColormap(['#FF0000', '#0000FF'])
 			Z = classifier.predict_proba(np.c_[md1.ravel(), md2.ravel()])[:, 1]
 			Z = Z.reshape(md1.shape)
-			ax.contourf(md1, md2, Z, cmap=cm_bkgd, alpha=0.8)
+			ax.contourf(md1, md2, Z, vmin=0, vmax=1, cmap=cm_bkgd, alpha=0.8)
 		
 		elif num_classes == 3:
 			cm_bkgd_1 = plt.cm.Reds

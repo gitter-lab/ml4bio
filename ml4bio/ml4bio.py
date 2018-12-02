@@ -14,9 +14,13 @@ from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTr
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
-from ml4bio.data import Data
-from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-from ml4bio.model_metrics import ModelMetrics
+# from ml4bio.data import Data
+# from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+# from ml4bio.model_metrics import ModelMetrics
+
+from data import Data
+from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+from model_metrics import ModelMetrics
 
 class Training_thread(QThread):
     """
@@ -897,6 +901,7 @@ class App(QMainWindow):
             self.cvRadioButton.setChecked(True)
             self.cvSpinBox.setValue(5)
             self.validationCheckBox.setChecked(True)
+            self.testBackPushButton.setEnabled(True)
 
         # remove trained classifiers
         if option == 'models':
@@ -1347,7 +1352,7 @@ class App(QMainWindow):
         elif flag == 'max_depth':
             msg = 'max_depth: must be a positive integer (e.g. 3) or None'
         elif flag == 'penalty':
-            msg = 'penalty: must be a positive number (e.g. 0.5)'
+            msg = 'C/alpha: must be a positive number (e.g. 0.5)'
         elif flag == 'intercept_scaling':
             msg = 'intercept_scaling: must be a number (e.g. 1.0)'
         elif flag == 'batch_size':
@@ -1355,9 +1360,9 @@ class App(QMainWindow):
         elif flag == 'learning_rate_init':
             msg = 'learning_rate_init: must be a positive number (e.g. 0.001)'
         elif flag == 'kernel_coef':
-            msg = 'kernel_coef: must be a positive number (e.g. 0.5)'
+            msg = 'gamma: must be a positive number (e.g. 0.5)'
         elif flag == 'indenpendent_term':
-            msg = 'indenpendent_term: must be a number (e.g. 0)'
+            msg = 'coef0: must be a number (e.g. 0)'
         elif flag == 'class_prior':
             msg = 'class_prior: must be None or follow the format <value>,...,<value> '
             msg += 'where the number of values equals the number of classes '
@@ -1748,8 +1753,8 @@ class App(QMainWindow):
 
         # layout
         self.lrLayout = QFormLayout()
-        self.lrLayout.addRow('penalty_type:', self.lrRegularizationComboBox)
-        self.lrLayout.addRow('penalty:', self.lrRglrStrengthLineEdit)
+        self.lrLayout.addRow('penalty:', self.lrRegularizationComboBox)
+        self.lrLayout.addRow('C:', self.lrRglrStrengthLineEdit)
         self.lrLayout.addRow('fit_intercept:', self.lrFitInterceptCheckBox)
         self.lrLayout.addRow('intercept_scaling:', self.lrInterceptScalingLineEdit)
         self.lrLayout.addRow('solver:', self.lrSolverComboBox)
@@ -1815,7 +1820,7 @@ class App(QMainWindow):
         self.nnLayout.addRow('num_hidden_units:', self.nnNumHiddenUnitsSpinBox)
         self.nnLayout.addRow('activation:', self.nnActivationComboBox)
         self.nnLayout.addRow('solver:', self.nnSolverComboBox)
-        self.nnLayout.addRow('penalty:', self.nnAlphaLineEdit)
+        self.nnLayout.addRow('alpha:', self.nnAlphaLineEdit)
         self.nnLayout.addRow('batch_size:', self.nnBatchSizeLineEdit)
         self.nnLayout.addRow('learning_rate:', self.nnLearningRateComboBox)
         self.nnLayout.addRow('learning_rate_init:', self.nnLearningRateInitLineEdit)
@@ -1872,11 +1877,11 @@ class App(QMainWindow):
 
         # layout
         self.svmLayout = QFormLayout()
-        self.svmLayout.addRow('penalty:', self.svmPenaltyLineEdit)
+        self.svmLayout.addRow('C:', self.svmPenaltyLineEdit)
         self.svmLayout.addRow('kernel:', self.svmKernelComboBox)
         self.svmLayout.addRow('degree:', self.svmDegreeSpinBox)
-        self.svmLayout.addRow('kernel_coef:', self.svmGammaLineEdit)
-        self.svmLayout.addRow('indenpendent_term:', self.svmCoefLineEdit)
+        self.svmLayout.addRow('gamma:', self.svmGammaLineEdit)
+        self.svmLayout.addRow('coef0:', self.svmCoefLineEdit)
         self.svmLayout.addRow('class_weight:', self.svmClassWeightComboBox)
 
         self.svmSpacer = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
