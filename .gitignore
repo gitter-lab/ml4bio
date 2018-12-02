@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 *.egg-info/
 .pytest_cache/
+build/
+dist/
 
 # Jupyter Notebook
 .ipynb_checkpoints
