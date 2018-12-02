@@ -396,15 +396,15 @@ class Model:
 			X = self.test_X
 			y = self.test_y
 
-		d1 = X.iloc[:, 0] 	# x-axis
-		d2 = X.iloc[:, 1]	# y-axis
-		d1_slack = (d1.max() - d1.min()) * 0.1
-		d2_slack = (d2.max() - d2.min()) * 0.1
-		d1_min, d1_max = d1.min() - d1_slack, d1.max() + d1_slack 	# x-axis range
-		d2_min, d2_max = d2.min() - d2_slack, d2.max() + d2_slack	# y-axis range
-		step_1 = (d1_max - d1_min) / 200
-		step_2 = (d2_max - d2_min) / 200
-		md1, md2 = np.meshgrid(np.arange(d1_min, d1_max, step_1), np.arange(d2_min, d2_max, step_2))
+		b1 = self.X.iloc[:, 0]
+		b2 = self.X.iloc[:, 1]
+		b1_slack = (b1.max() - b1.min()) * 0.1
+		b2_slack = (b2.max() - b2.min()) * 0.1
+		b1_min, b1_max = b1.min() - b1_slack, b1.max() + b1_slack 	# x-axis range
+		b2_min, b2_max = b2.min() - b2_slack, b2.max() + b2_slack	# y-axis range
+		step_1 = (b1_max - b1_min) / 200
+		step_2 = (b2_max - b2_min) / 200
+		md1, md2 = np.meshgrid(np.arange(b1_min, b1_max, step_1), np.arange(b2_min, b2_max, step_2))
 
 		rcParams.update({'font.size': 7})
 		canvas.figure.clear()
@@ -439,6 +439,8 @@ class Model:
 			ax.contourf(md1, md2, P2, levels, cmap=cm_bkgd_2, alpha=0.8)
 			ax.contourf(md1, md2, P3, levels, cmap=cm_bkgd_3, alpha=0.8)
 
+		d1 = X.iloc[:, 0] 	# x-axis
+		d2 = X.iloc[:, 1]	# y-axis
 		ax.scatter(d1, d2, c=le.transform(y), cmap=cm_pts, alpha=0.6, edgecolors='k')
 		ax.set_xlim(md1.min(), md1.max())
 		ax.set_ylim(md2.min(), md2.max())
