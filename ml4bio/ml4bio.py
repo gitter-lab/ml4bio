@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTr
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 
+import ml4bio
 from ml4bio.data import Data
 from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
 from ml4bio.model_metrics import ModelMetrics
@@ -2223,7 +2224,7 @@ class App(QMainWindow):
 
         # global geometry
         self.resize(1064, 700)
-        self.setWindowTitle('ML4Bio')
+        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
         self.leftPanel.resize(360, 680)
         self.leftPanel.setStyleSheet("QStackedWidget {background-color:rgb(226, 226, 226)}")
         self.leftPanel.move(10, 10)
