@@ -8,20 +8,24 @@ from matplotlib.figure import Figure
 from PyQt5 import QtCore
 from PyQt5.QtCore import QSize, Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QPushButton, QRadioButton
+from PyQt5.QtWidgets import QPushButton, QRadioButton, QDesktopWidget
 from PyQt5.QtWidgets import QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QLineEdit, QTextEdit, QLabel
 from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTreeWidget, QTableWidgetItem, QTreeWidgetItem, QListView
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QFontMetrics
+import qdarkstyle
+import seaborn
 
-import ml4bio
-from ml4bio.data import Data
-from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-from ml4bio.model_metrics import ModelMetrics
+import PyQt5.QtWidgets as QtWidgets
 
-# from data import Data
-# from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-# from model_metrics import ModelMetrics
+#import ml4bio
+#from ml4bio.data import Data
+#from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+#from ml4bio.model_metrics import ModelMetrics
+
+from data import Data
+from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+from model_metrics import ModelMetrics
 
 class Training_thread(QThread):
     """
@@ -48,6 +52,12 @@ class Training_thread(QThread):
         """
         super().__init__()
         self.app = app
+        
+        #Setup for high dpi displays 
+        #TODO: We have to make this work for the table
+        #self.app.setAttribute(Qt.AA_EnableHighDpiScaling)
+        #if hasattr(QStyleFactory, 'AA_UseHighDpiPixmaps'):
+        #    self.app.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
     def __del__(self):
         self.wait()
@@ -447,6 +457,13 @@ class App(QMainWindow):
         Initializes the GUI.
         """
         super().__init__()
+
+        ##Sets main stylesheet for application
+        #self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
+        stylesFile = open(os.path.join("ml4bio","styles","mainStyleSheet.css"))
+        styles = stylesFile.read()
+        self.setStyleSheet(styles)
+
         self.leftPanel = QStackedWidget(self)
         self.rightPanel = QGroupBox(self)
         self.initUI()
@@ -909,6 +926,7 @@ class App(QMainWindow):
             self.curr_model = None
             self.models.clear()
             self.models_table.setRowCount(0)
+            self.models_table.resizeColumnsToContents()
             self.model_summary_.clear()
             self.classNextPushButton.setDisabled(True)
             self.performanceListView.setRowHidden(0, False)
@@ -1077,6 +1095,7 @@ class App(QMainWindow):
         self.models_table.item(row, 5).setText(str(metrics.f1()))
         self.models_table.item(row, 6).setText(str(metrics.auroc()))
         self.models_table.item(row, 7).setText(str(metrics.auprc()))
+        self.models_table.resizeColumnsToContents()
 
     def switch_metrics(self, index):
         """
@@ -1117,6 +1136,7 @@ class App(QMainWindow):
         if self.leftPanel.currentIndex() == 2 and self.performanceComboBox.currentIndex() != 2:
             self.select('best')
             self.select('user')
+        self.models_table.resizeColumnsToContents()
 
     def switch_model(self, row, col):
         """
@@ -1380,6 +1400,13 @@ class App(QMainWindow):
         """
         Sets up the GUI.
         """
+
+        # global geometry
+        sizeObject = QDesktopWidget().screenGeometry(-1)
+        w = sizeObject.width()*0.5
+        h = sizeObject.height()*0.5
+        self.resize(w, h)
+
         self.data = None
         self.val_method = 'cv'
         self.models = dict()
@@ -2149,15 +2176,22 @@ class App(QMainWindow):
         self.models_table.verticalHeader().hide()
         self.models_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.models_table.setColumnCount(8)
-        self.models_table.setHorizontalHeaderLabels(['Name', 'Type', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUROC', 'AUPRC'])
-        self.models_table.setColumnWidth(0, 140)
-        self.models_table.setColumnWidth(1, 110)
-        self.models_table.setColumnWidth(2, 70)
-        self.models_table.setColumnWidth(3, 70)
-        self.models_table.setColumnWidth(4, 65)
-        self.models_table.setColumnWidth(5, 65)
-        self.models_table.setColumnWidth(6, 65)
-        self.models_table.setColumnWidth(7, 65)
+
+        #Set column names and widths
+        headerList = ['Name', 'Type', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUROC', 'AUPRC']
+        fm = QFontMetrics(self.font)
+        self.models_table.setHorizontalHeaderLabels(headerList)
+        self.models_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        for i in range(len(headerList)):
+            self.models_table.setColumnWidth(i, fm.width(headerList[i])+20)
+        #self.models_table.setColumnWidth(0, 140)
+        #self.models_table.setColumnWidth(1, 110)
+        #self.models_table.setColumnWidth(2, 70)
+        #self.models_table.setColumnWidth(3, 70)
+        #self.models_table.setColumnWidth(4, 65)
+        #self.models_table.setColumnWidth(5, 65)
+        #self.models_table.setColumnWidth(6, 65)
+        #self.models_table.setColumnWidth(7, 65)
         self.models_table.setFont(self.font)
         self.table_header = self.models_table.horizontalHeader()
         self.rightPanelLayout.addLayout(self.trainedClassifiersLayout)
@@ -2194,8 +2228,9 @@ class App(QMainWindow):
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
-        self.canvas.setMaximumWidth(340)
-        self.canvas.setMaximumHeight(340)
+        self.canvas.setMaximumWidth(w*0.28)
+        self.canvas.setMaximumHeight(h*0.44)
+
         self.canvas.setParent(self.rightPanel)
         self.visLayout.addWidget(self.canvas)
 
@@ -2222,16 +2257,41 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        # global geometry
-        self.resize(1064, 700)
-        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
-        self.leftPanel.resize(360, 680)
-        self.leftPanel.setStyleSheet("QStackedWidget {background-color:rgb(226, 226, 226)}")
-        self.leftPanel.move(10, 10)
-        self.rightPanel.resize(680, 680)
-        self.rightPanel.move(380, 10)
+        #self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+
+        self.leftPanel.resize(0.34*w, h*0.95)
+        self.leftPanel.move(0.01*w, 0.02*h)
+        self.rightPanel.resize(0.60*w, 0.95*h)
+        self.rightPanel.move(0.36*w, 0.02*h)
 
         self.show()
+
+
+    def resizeEvent(self, event):
+        """
+        Catches the resize event to set things up
+        """
+        w = self.width()
+        h = self.height()
+        self.leftPanel.resize(0.34*w, h*0.95)
+        self.leftPanel.move(0.01*w, 0.02*h)
+        self.rightPanel.resize(0.60*w, 0.95*h)
+        self.rightPanel.move(0.36*w, 0.02*h)
+        
+        #We have to not plot too small or we get a crash
+        #TODO: Store these min vals somewhere?
+        if w*0.28 >= 200 and h*0.44 >= 200:
+            self.canvas.setMaximumWidth(w*0.28)
+            self.canvas.setMaximumHeight(h*0.44)
+            try:
+                self.plot()
+            except ValueError as ex:
+                #We still somtimes get an error if by the time the 
+                #occurs the size has become too small again
+                #So ignore value errors
+                #TODO: Is there a better way?
+                pass
+        return 
 
 def main():
     """
