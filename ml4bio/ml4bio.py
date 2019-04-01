@@ -25,6 +25,14 @@ from data import Data
 from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
 from model_metrics import ModelMetrics
 
+
+#Setup for high dpi displays 
+#This code has to be outside any function
+#if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+#    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+#if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+#    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
 class Training_thread(QThread):
     """
     An instance of this class is a thread for training classifiers.
@@ -50,12 +58,6 @@ class Training_thread(QThread):
         """
         super().__init__()
         self.app = app
-        
-        #Setup for high dpi displays 
-        #TODO: We have to make this work for the table
-        #self.app.setAttribute(Qt.AA_EnableHighDpiScaling)
-        #if hasattr(QStyleFactory, 'AA_UseHighDpiPixmaps'):
-        #    self.app.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
     def __del__(self):
         self.wait()
@@ -2214,7 +2216,7 @@ class App(QMainWindow):
         self.visFrameLayout.addLayout(self.visFrameLeftLayout)
         self.visFrameLayout.addLayout(self.visFrameRightLayout)
         self.visListLayout.addWidget(self.visFrame)
-        self.visListLayout.setAlignment(Qt.AlignLeft)
+        #self.visListLayout.setAlignment(Qt.AlignLeft) #TODO: This causes the canvas to not increase in width. For some reason. 
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
