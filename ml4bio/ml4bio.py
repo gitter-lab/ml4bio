@@ -28,10 +28,10 @@ from model_metrics import ModelMetrics
 
 #Setup for high dpi displays 
 #This code has to be outside any function
-#if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-#    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-#if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-#    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Training_thread(QThread):
     """
@@ -459,9 +459,9 @@ class App(QMainWindow):
         super().__init__()
 
         ##Sets main stylesheet for application
-        #stylesFile = open(os.path.join("ml4bio","styles","altStyleSheet.css"))
-        #styles = stylesFile.read()
-        #self.setStyleSheet(styles)
+        stylesFile = open(os.path.join("styles","mainStyleSheet.css"))
+        styles = stylesFile.read()
+        self.setStyleSheet(styles)
 
         self.leftPanel = QStackedWidget(self)
         self.rightPanel = QGroupBox(self)
@@ -2191,10 +2191,10 @@ class App(QMainWindow):
         self.visLayout = QHBoxLayout()
         self.visListLayout = QVBoxLayout()
         self.model_summary_ = QTreeWidget(self.rightPanel)
-        self.model_summary_.setMaximumWidth(300)
+        self.model_summary_.setMaximumWidth(w*0.28)
         self.model_summary_.setColumnCount(2)
         self.model_summary_.setHeaderHidden(True)
-        self.model_summary_.setColumnWidth(0, 160)
+        self.model_summary_.setColumnWidth(0, w*0.145)
         self.model_summary_.setFont(self.font)
         self.visListLayout.addWidget(self.model_summary_)
 
@@ -2270,6 +2270,11 @@ class App(QMainWindow):
         self.rightPanel.resize(0.60*w, 0.95*h)
         self.rightPanel.move(0.36*w, 0.02*h)
         
+        #Right panel bottom left table
+        self.model_summary_.setMaximumWidth(w*0.28)
+        self.model_summary_.setColumnWidth(0, w*0.145)
+
+
         #We have to not plot too small or we get a crash
         #TODO: Store these min vals somewhere?
         if w*0.28 >= 200 and h*0.44 >= 200:
