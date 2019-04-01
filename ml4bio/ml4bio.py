@@ -13,8 +13,6 @@ from PyQt5.QtWidgets import QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QLin
 from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTreeWidget, QTableWidgetItem, QTreeWidgetItem, QListView
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QFontMetrics
-import qdarkstyle
-import seaborn
 
 import PyQt5.QtWidgets as QtWidgets
 
@@ -459,10 +457,9 @@ class App(QMainWindow):
         super().__init__()
 
         ##Sets main stylesheet for application
-        #self.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
-        stylesFile = open(os.path.join("ml4bio","styles","mainStyleSheet.css"))
-        styles = stylesFile.read()
-        self.setStyleSheet(styles)
+        #stylesFile = open(os.path.join("ml4bio","styles","altStyleSheet.css"))
+        #styles = stylesFile.read()
+        #self.setStyleSheet(styles)
 
         self.leftPanel = QStackedWidget(self)
         self.rightPanel = QGroupBox(self)
@@ -2184,14 +2181,6 @@ class App(QMainWindow):
         self.models_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         for i in range(len(headerList)):
             self.models_table.setColumnWidth(i, fm.width(headerList[i])+20)
-        #self.models_table.setColumnWidth(0, 140)
-        #self.models_table.setColumnWidth(1, 110)
-        #self.models_table.setColumnWidth(2, 70)
-        #self.models_table.setColumnWidth(3, 70)
-        #self.models_table.setColumnWidth(4, 65)
-        #self.models_table.setColumnWidth(5, 65)
-        #self.models_table.setColumnWidth(6, 65)
-        #self.models_table.setColumnWidth(7, 65)
         self.models_table.setFont(self.font)
         self.table_header = self.models_table.horizontalHeader()
         self.rightPanelLayout.addLayout(self.trainedClassifiersLayout)
@@ -2225,6 +2214,7 @@ class App(QMainWindow):
         self.visFrameLayout.addLayout(self.visFrameLeftLayout)
         self.visFrameLayout.addLayout(self.visFrameRightLayout)
         self.visListLayout.addWidget(self.visFrame)
+        self.visListLayout.setAlignment(Qt.AlignLeft)
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
