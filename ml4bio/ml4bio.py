@@ -16,15 +16,14 @@ from PyQt5.QtGui import QFont, QIcon, QPixmap, QFontMetrics
 
 import PyQt5.QtWidgets as QtWidgets
 
-#import ml4bio
-#from ml4bio.data import Data
-#from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-#from ml4bio.model_metrics import ModelMetrics
+import ml4bio
+from ml4bio.data import Data
+from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+from ml4bio.model_metrics import ModelMetrics
 
-from data import Data
-from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-from model_metrics import ModelMetrics
-
+# from data import Data
+# from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
+# from model_metrics import ModelMetrics
 
 #Setup for high dpi displays
 #This code has to be outside any function
@@ -457,12 +456,6 @@ class App(QMainWindow):
         Initializes the GUI.
         """
         super().__init__()
-
-        ##Sets main stylesheet for application
-        stylesFile = open(os.path.join("styles","mainStyleSheet.css"))
-        styles = stylesFile.read()
-        self.setStyleSheet(styles)
-
         self.leftPanel = QStackedWidget(self)
         self.rightPanel = QGroupBox(self)
         self.initUI()
@@ -2216,7 +2209,6 @@ class App(QMainWindow):
         self.visFrameLayout.addLayout(self.visFrameLeftLayout)
         self.visFrameLayout.addLayout(self.visFrameRightLayout)
         self.visListLayout.addWidget(self.visFrame)
-        #self.visListLayout.setAlignment(Qt.AlignLeft) #TODO: This causes the canvas to not increase in width. For some reason.
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
@@ -2249,7 +2241,7 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        #self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
 
         self.leftPanel.resize(0.34*w, h*0.95)
         self.leftPanel.move(0.01*w, 0.02*h)

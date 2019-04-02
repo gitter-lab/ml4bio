@@ -10,8 +10,8 @@ from matplotlib import pyplot as plt
 from matplotlib import rcParams
 from matplotlib.colors import ListedColormap
 
-#from ml4bio.model_metrics import ModelMetrics
-from model_metrics import ModelMetrics
+from ml4bio.model_metrics import ModelMetrics
+# from model_metrics import ModelMetrics
 
 class Model:
 	"""
@@ -310,7 +310,7 @@ class Model:
 
 	def summary(self, view):
 		"""
-		Displays a summary of classifier performance. 
+		Displays a summary of classifier performance.
 		The summary is organized in a tree structure.
 
 		:param view: the widget where the summary is displayed
@@ -327,7 +327,7 @@ class Model:
 		type_item.setText(1, self.type())
 		params_item = QTreeWidgetItem(view)
 		params_item.setText(0, 'Parameters')
-		
+
 		# show classifier hyperparameters
 		params = self.params()
 		for param in params:
@@ -417,7 +417,7 @@ class Model:
 			Z = classifier.predict_proba(np.c_[md1.ravel(), md2.ravel()])[:, 1]
 			Z = Z.reshape(md1.shape)
 			ax.contourf(md1, md2, Z, vmin=0, vmax=1, cmap=cm_bkgd, alpha=0.8)
-		
+
 		elif num_classes == 3:
 			cm_bkgd_1 = plt.cm.Reds
 			cm_bkgd_2 = plt.cm.Greens
@@ -465,7 +465,7 @@ class DecisionTree(Model):
 		"""
 		See **Model** class.
 		"""
-		super().__init__(classifier, X, y, val_method, val_size, k, stratify)		
+		super().__init__(classifier, X, y, val_method, val_size, k, stratify)
 		self.type_ = 'decision tree'
 
 class RandomForest(Model):
