@@ -2276,7 +2276,7 @@ class App(QMainWindow):
                 #We still somtimes get an error if by the time the
                 #occurs the size has become too small again
                 #So ignore value errors
-                #We probably want to get rid of this behavior eventually. Noted in issue #
+                #We probably want to get rid of this behavior eventually. Noted in issue #12
                 pass
         return
 
