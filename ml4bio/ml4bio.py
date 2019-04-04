@@ -8,11 +8,13 @@ from matplotlib.figure import Figure
 from PyQt5 import QtCore
 from PyQt5.QtCore import QSize, Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QFileDialog, QMessageBox
-from PyQt5.QtWidgets import QPushButton, QRadioButton
+from PyQt5.QtWidgets import QPushButton, QRadioButton, QDesktopWidget
 from PyQt5.QtWidgets import QComboBox, QSpinBox, QDoubleSpinBox, QCheckBox, QLineEdit, QTextEdit, QLabel
 from PyQt5.QtWidgets import QStackedWidget, QGroupBox, QFrame, QTableWidget, QTreeWidget, QTableWidgetItem, QTreeWidgetItem, QListView
 from PyQt5.QtWidgets import QFormLayout, QGridLayout, QHBoxLayout, QVBoxLayout, QSpacerItem, QSizePolicy
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QFontMetrics
+
+import PyQt5.QtWidgets as QtWidgets
 
 import ml4bio
 from ml4bio.data import Data
@@ -22,6 +24,13 @@ from ml4bio.model_metrics import ModelMetrics
 # from data import Data
 # from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
 # from model_metrics import ModelMetrics
+
+#Setup for high dpi displays
+#This code has to be outside any function
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 class Training_thread(QThread):
     """
@@ -64,7 +73,7 @@ class Training_thread(QThread):
         elif index == 5:    model = self.neural_network()
         elif index == 6:    model = self.svm()
         elif index == 7:    model = self.naive_bayes()
-        
+
         self.finished.emit(model)   # passes the classifier to the main thread.
 
     def run(self):
@@ -92,7 +101,7 @@ class Training_thread(QThread):
             except:
                 self.error.emit('max_depth')
                 return
-            
+
             if max_depth <= 0 or float(self.app.dtMaxDepthLineEdit.text()) - max_depth != 0:
                 self.error.emit('max_depth')
                 return
@@ -132,7 +141,7 @@ class Training_thread(QThread):
             except:
                 self.error.emit('max_depth')
                 return
-            
+
             if max_depth <= 0 or float(self.app.rfMaxDepthLineEdit.text()) - max_depth != 0:
                 self.error.emit('max_depth')
                 return
@@ -155,7 +164,7 @@ class Training_thread(QThread):
             bootstrap = self.app.rfBootstrapCheckBox.isChecked(), \
             class_weight = class_weight, \
             random_state = 0)
-        
+
         return RandomForest(rf, X, y, val_method=self.app.val_method, \
                 val_size=self.app.holdoutSpinBox.value() / 100, \
                 k = self.app.cvSpinBox.value(), \
@@ -175,7 +184,7 @@ class Training_thread(QThread):
             weights = self.app.knnWeightsComboBox.currentText(), \
             metric = self.app.knnMetricComboBox.currentText(), \
             algorithm = 'auto')
-        
+
         return KNearestNeighbors(knn, X, y, val_method=self.app.val_method, \
                 val_size=self.app.holdoutSpinBox.value() / 100, \
                 k = self.app.cvSpinBox.value(), \
@@ -236,7 +245,7 @@ class Training_thread(QThread):
             max_iter = max_iter, \
             multi_class = self.app.lrMultiClassComboBox.currentText(), \
             random_state = 0)
-        
+
         try:
             model =  LogisticRegression(lr, X, y, val_method=self.app.val_method, \
                 val_size=self.app.holdoutSpinBox.value() / 100, \
@@ -386,8 +395,8 @@ class Training_thread(QThread):
             class_weight = class_weight, \
             max_iter = max_iter, \
             random_state = 0)
-           
-        try: 
+
+        try:
             model = SVM(svc, X, y, val_method=self.app.val_method, \
                 val_size=self.app.holdoutSpinBox.value() / 100, \
                 k = self.app.cvSpinBox.value(), \
@@ -430,7 +439,7 @@ class Training_thread(QThread):
         elif self.app.nbDistributionLabel.text() == 'gaussian':
             nb = naive_bayes.GaussianNB(priors = class_prior)
             mode = 'gaussian'
-        
+
         return NaiveBayes(nb, X, y, val_method=self.app.val_method, \
                 val_size=self.app.holdoutSpinBox.value() / 100, \
                 k = self.app.cvSpinBox.value(), \
@@ -493,7 +502,7 @@ class App(QMainWindow):
 
     def spin_box(self, val, min, max, stepsize, parent):
         """
-        Return a spin box. 
+        Return a spin box.
         This spin box only allows integer values.
 
         :param val: initial value
@@ -520,7 +529,7 @@ class App(QMainWindow):
     def double_spin_box(self, val, min, max, stepsize, prec, parent):
         """
         Return a double spin box.
-        This spin box allows double values. 
+        This spin box allows double values.
 
         :param val: initial value
         :type val: float
@@ -548,15 +557,15 @@ class App(QMainWindow):
     def load(self, labeled):
         """
         Load a data file. Process the data and show a summary of it.
-        It checks the data format and raises an exception if the data is 
-        in wrong format. Only .csv file with a header that contains 
-        feature names are accepted. 
+        It checks the data format and raises an exception if the data is
+        in wrong format. Only .csv file with a header that contains
+        feature names are accepted.
 
-        If the data is labeled, the label column must be the last column, 
-        and there must be at least 20 samples. An exception will be raised 
-        if fewer than 20 samples are present. 
+        If the data is labeled, the label column must be the last column,
+        and there must be at least 20 samples. An exception will be raised
+        if fewer than 20 samples are present.
 
-        If the data is unlabeled, the feature names must match those of the 
+        If the data is unlabeled, the feature names must match those of the
         labeled data. Extra white spaces are not allowed. An exception will
         be raised if the features do not match.
 
@@ -578,7 +587,7 @@ class App(QMainWindow):
                     self.error('num_samples')
                     return
 
-                # once labeled data is successfully imported, 
+                # once labeled data is successfully imported,
                 # enable subsequent operations.
                 self.labeledFileDisplay.setText(self.data.name('labeled'))
                 self.unlabeledFileDisplay.setText('')
@@ -679,7 +688,7 @@ class App(QMainWindow):
 
     def update_logistic_regression(self):
         """
-        Sets hyperparameters of logistic regression according to 
+        Sets hyperparameters of logistic regression according to
         the selected solver. Some options are enabled/disabled.
         """
         if self.lrSolverComboBox.currentIndex() in [1, 2, 4]:
@@ -710,7 +719,7 @@ class App(QMainWindow):
 
     def update_neural_network(self):
         """
-        Set hyperparameters of neural network according to 
+        Set hyperparameters of neural network according to
         the selected solver. Some options are enabled/disabled.
         """
         if self.nnSolverComboBox.currentIndex() == 2:
@@ -740,7 +749,7 @@ class App(QMainWindow):
 
     def update_svm(self):
         """
-        Set hyperparameters of neural network according to 
+        Set hyperparameters of neural network according to
         the selected kernel. Some options are enabled/disabled.
         """
         if self.svmKernelComboBox.currentIndex() == 2:
@@ -807,10 +816,10 @@ class App(QMainWindow):
 
             - Encode data (integer and one-hot encoding).
             - Generate train/test split.
-            - Decide validation method (holdout, cv or loo). 
+            - Decide validation method (holdout, cv or loo).
             - Set classifier hyperparameters according to data.
 
-        After this function is called, the software proceeds to the 2nd step 
+        After this function is called, the software proceeds to the 2nd step
         in training (i.e. train classifiers).
         """
         self.data.encode()  # encode data.
@@ -827,15 +836,15 @@ class App(QMainWindow):
 
         # decide validation method.
         val = 0
-        if self.holdoutRadioButton.isChecked(): 
+        if self.holdoutRadioButton.isChecked():
             self.val_method = 'holdout'
             if self.holdoutSpinBox.value() == 0:
                 val = self.warn('holdout')  # warning: no validation data
-        elif self.cvRadioButton.isChecked():    
+        elif self.cvRadioButton.isChecked():
             self.val_method = 'cv'
             if self.data.num_samples() / self.cvSpinBox.value() < 10:
                 val = self.warn('cv')       # warning: too few samples in each fold
-        elif self.looRadioButton.isChecked():   
+        elif self.looRadioButton.isChecked():
             self.val_method = 'loo'
             if self.data.num_samples() > 50:
                 val = self.warn('loo')      # warning: too many samples for leave-one-out
@@ -857,7 +866,7 @@ class App(QMainWindow):
         self.trainStatusLabel.setText('')
 
         # if no data is held out for validation, only show metrics on training data.
-        # this is for illustrating the importance of validation and should not be 
+        # this is for illustrating the importance of validation and should not be
         # activated under other circumstances.
         if self.holdoutRadioButton.isChecked() and self.holdoutSpinBox.value() == 0:
             self.performanceComboBox.setCurrentIndex(1)
@@ -874,7 +883,7 @@ class App(QMainWindow):
 
             - If option='train', trained classifiers will be cleared.
               This is called by clicking on the return button on the 2nd page.
-        
+
             - If option='test', the classifier selected for testing is no longer selected.
               This is called by clicking on the return button on the 3rd page.
 
@@ -909,6 +918,7 @@ class App(QMainWindow):
             self.curr_model = None
             self.models.clear()
             self.models_table.setRowCount(0)
+            self.models_table.resizeColumnsToContents()
             self.model_summary_.clear()
             self.classNextPushButton.setDisabled(True)
             self.performanceListView.setRowHidden(0, False)
@@ -951,7 +961,7 @@ class App(QMainWindow):
 
     def start_train(self):
         """
-        Starts training by freezing the 2nd page so that user cannot 
+        Starts training by freezing the 2nd page so that user cannot
         alter the hyperparameters when training is in progress.
         """
         self.trainStatusLabel.setText('Training in progress...')
@@ -965,8 +975,8 @@ class App(QMainWindow):
 
     def finish_train(self, model):
         """
-        Receives the trained classifier from the training thread 
-        and pushs the new classifier into the model table in the 
+        Receives the trained classifier from the training thread
+        and pushs the new classifier into the model table in the
         right panel.
 
         :param model: trained classifier
@@ -978,7 +988,7 @@ class App(QMainWindow):
 
         else:
             self.trainStatusLabel.setText('Training completed.')
-            
+
             # set user-supplied classifier name.
             name = self.classNameLineEdit.text().strip()
             if name != '':
@@ -1014,7 +1024,7 @@ class App(QMainWindow):
     def push(self, model, option):
         """
         Enters a classifier into the model table. Its performance metrics
-        are added to the entry. Depending on _option_, it populates the 
+        are added to the entry. Depending on _option_, it populates the
         entry with appropriate performance metrics.
 
         :param model: trained classifier
@@ -1077,6 +1087,7 @@ class App(QMainWindow):
         self.models_table.item(row, 5).setText(str(metrics.f1()))
         self.models_table.item(row, 6).setText(str(metrics.auroc()))
         self.models_table.item(row, 7).setText(str(metrics.auprc()))
+        self.models_table.resizeColumnsToContents()
 
     def switch_metrics(self, index):
         """
@@ -1117,6 +1128,7 @@ class App(QMainWindow):
         if self.leftPanel.currentIndex() == 2 and self.performanceComboBox.currentIndex() != 2:
             self.select('best')
             self.select('user')
+        self.models_table.resizeColumnsToContents()
 
     def switch_model(self, row, col):
         """
@@ -1173,7 +1185,7 @@ class App(QMainWindow):
 
     def sort(self, col):
         """
-        Sorts classifiers in descending order with respect to the selected 
+        Sorts classifiers in descending order with respect to the selected
         metric.
 
         :param col: index of the selected metric
@@ -1185,7 +1197,7 @@ class App(QMainWindow):
         """
         Selects a classifier for testing.
 
-            - If option='best', select the best-performing classifier based 
+            - If option='best', select the best-performing classifier based
               on the selected metric.
 
             - If option='user', select the classifier highlighted by user.
@@ -1204,17 +1216,17 @@ class App(QMainWindow):
                 col = index + 1
                 self.sort(col)
                 self.switch_model(0, 0)
-                self.selected_model = self.curr_model        
+                self.selected_model = self.curr_model
                 self.userPickLabel.setText(self.selected_model.name())
                 self.testPushButton.setEnabled(True)
         elif option == 'user' and self.userPickRadioButton.isChecked():
-            self.selected_model = self.curr_model        
+            self.selected_model = self.curr_model
             self.userPickLabel.setText(self.selected_model.name())
             self.testPushButton.setEnabled(True)
 
     def test(self):
         """
-        Tests the selected classifier. Computes metrics on test data and 
+        Tests the selected classifier. Computes metrics on test data and
         show them in the classifier's entry.
         """
         # when at least one classifier has been tested
@@ -1253,7 +1265,7 @@ class App(QMainWindow):
         self.performanceListView.setRowHidden(2, False)
         self.bestPerformRadioButton.setChecked(True)
         self.metricComboBox.setCurrentIndex(0)          # DO NOT switch order
-        self.performanceComboBox.setCurrentIndex(2)     # (bug in GUI library) 
+        self.performanceComboBox.setCurrentIndex(2)     # (bug in GUI library)
 
         self.testBackPushButton.setDisabled(True)
         self.testFinishPushButton.setEnabled(True)
@@ -1380,6 +1392,13 @@ class App(QMainWindow):
         """
         Sets up the GUI.
         """
+
+        # global geometry
+        sizeObject = QDesktopWidget().screenGeometry(-1)
+        w = sizeObject.width()*0.5
+        h = sizeObject.height()*0.5
+        self.resize(w, h)
+
         self.data = None
         self.val_method = 'cv'
         self.models = dict()
@@ -1394,7 +1413,7 @@ class App(QMainWindow):
         self.warn_box = QMessageBox()
         self.warn_box.setIcon(QMessageBox.Warning)
         self.warn_box.setStandardButtons(QMessageBox.Close | QMessageBox.Ignore)
-        
+
         self.err_box = QMessageBox()
         self.err_box.setIcon(QMessageBox.Critical)
         self.err_box.setStandardButtons(QMessageBox.Ok)
@@ -1563,7 +1582,7 @@ class App(QMainWindow):
         self.looRadioButton.toggled.connect(self.validationCheckBox.setDisabled)
 
         self.dataNextPushButton.clicked.connect(self.set)
-        
+
         ########## 2nd page: training ##########
 
         self.modelPage = QWidget()
@@ -1585,7 +1604,6 @@ class App(QMainWindow):
 
         ### classifier parameter stack
         self.paramStack = QStackedWidget(self.modelPage)
-        self.paramStack.setMinimumHeight(320)
         self.modelPageLayout.addLayout(self.classTypeLayout)
         self.modelPageLayout.addWidget(self.paramStack)
 
@@ -2102,7 +2120,7 @@ class App(QMainWindow):
         self.testFinishPushButton = QPushButton('Finish', self.testPage)
         self.testFinishPushButton.setMinimumWidth(90)
         self.testFinishPushButton.setDefault(True)
-        self.testFinishPushButton.setDisabled(True)        
+        self.testFinishPushButton.setDisabled(True)
         self.testBackFinishSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.testBackFinishLayout = QHBoxLayout()
         self.testBackFinishLayout.addItem(self.testBackFinishSpacer)
@@ -2119,7 +2137,7 @@ class App(QMainWindow):
 
         self.userPickRadioButton.toggled.connect(self.metricComboBox.setDisabled)
         self.userPickRadioButton.toggled.connect(lambda: self.select(option='user'))
-        
+
         self.testPushButton.clicked.connect(self.test)
         self.predictionPushButton.clicked.connect(self.predict)
 
@@ -2149,15 +2167,14 @@ class App(QMainWindow):
         self.models_table.verticalHeader().hide()
         self.models_table.setSelectionBehavior(QTableWidget.SelectRows)
         self.models_table.setColumnCount(8)
-        self.models_table.setHorizontalHeaderLabels(['Name', 'Type', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUROC', 'AUPRC'])
-        self.models_table.setColumnWidth(0, 140)
-        self.models_table.setColumnWidth(1, 110)
-        self.models_table.setColumnWidth(2, 70)
-        self.models_table.setColumnWidth(3, 70)
-        self.models_table.setColumnWidth(4, 65)
-        self.models_table.setColumnWidth(5, 65)
-        self.models_table.setColumnWidth(6, 65)
-        self.models_table.setColumnWidth(7, 65)
+
+        #Set column names and widths
+        headerList = ['Name', 'Type', 'Accuracy', 'Precision', 'Recall', 'F1', 'AUROC', 'AUPRC']
+        fm = QFontMetrics(self.font)
+        self.models_table.setHorizontalHeaderLabels(headerList)
+        self.models_table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        for i in range(len(headerList)):
+            self.models_table.setColumnWidth(i, fm.width(headerList[i])+20)
         self.models_table.setFont(self.font)
         self.table_header = self.models_table.horizontalHeader()
         self.rightPanelLayout.addLayout(self.trainedClassifiersLayout)
@@ -2166,10 +2183,10 @@ class App(QMainWindow):
         self.visLayout = QHBoxLayout()
         self.visListLayout = QVBoxLayout()
         self.model_summary_ = QTreeWidget(self.rightPanel)
-        self.model_summary_.setMaximumWidth(300)
+        self.model_summary_.setMaximumWidth(w*0.28)
         self.model_summary_.setColumnCount(2)
         self.model_summary_.setHeaderHidden(True)
-        self.model_summary_.setColumnWidth(0, 160)
+        self.model_summary_.setColumnWidth(0, w*0.145)
         self.model_summary_.setFont(self.font)
         self.visListLayout.addWidget(self.model_summary_)
 
@@ -2181,7 +2198,7 @@ class App(QMainWindow):
         self.confusionMatrixRadioButton = QRadioButton('Confusion Matrix', self.visFrame)
         self.confusionMatrixRadioButton.setChecked(True)
         self.prRadioButton = QRadioButton('Precision-Recall', self.visFrame)
-        
+
         self.visFrameLeftLayout = QVBoxLayout()
         self.visFrameLeftLayout.addWidget(self.dataPlotRadioButton)
         self.visFrameLeftLayout.addWidget(self.rocRadioButton)
@@ -2194,8 +2211,9 @@ class App(QMainWindow):
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
-        self.canvas.setMaximumWidth(340)
-        self.canvas.setMaximumHeight(340)
+        self.canvas.setMaximumWidth(w*0.28)
+        self.canvas.setMaximumHeight(h*0.44)
+
         self.canvas.setParent(self.rightPanel)
         self.visLayout.addWidget(self.canvas)
 
@@ -2222,16 +2240,45 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        # global geometry
-        self.resize(1064, 700)
-        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
-        self.leftPanel.resize(360, 680)
-        self.leftPanel.setStyleSheet("QStackedWidget {background-color:rgb(226, 226, 226)}")
-        self.leftPanel.move(10, 10)
-        self.rightPanel.resize(680, 680)
-        self.rightPanel.move(380, 10)
+        #self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+
+        self.leftPanel.resize(0.34*w, h*0.95)
+        self.leftPanel.move(0.01*w, 0.02*h)
+        self.rightPanel.resize(0.60*w, 0.95*h)
+        self.rightPanel.move(0.36*w, 0.02*h)
 
         self.show()
+
+
+    def resizeEvent(self, event):
+        """
+        Catches the resize event to set things up
+        """
+        w = self.width()
+        h = self.height()
+        self.leftPanel.resize(0.34*w, h*0.95)
+        self.leftPanel.move(0.01*w, 0.02*h)
+        self.rightPanel.resize(0.60*w, 0.95*h)
+        self.rightPanel.move(0.36*w, 0.02*h)
+
+        #Right panel bottom left table
+        self.model_summary_.setMaximumWidth(w*0.28)
+        self.model_summary_.setColumnWidth(0, w*0.145)
+
+
+        #We have to not plot too small or we get a crash
+        if w*0.28 >= 200 and h*0.44 >= 200:
+            self.canvas.setMaximumWidth(w*0.28)
+            self.canvas.setMaximumHeight(h*0.44)
+            try:
+                self.plot()
+            except ValueError as ex:
+                #We still somtimes get an error if by the time the
+                #occurs the size has become too small again
+                #So ignore value errors
+                #We probably want to get rid of this behavior eventually. Noted in issue #12
+                pass
+        return
 
 def main():
     """
