@@ -1604,7 +1604,6 @@ class App(QMainWindow):
 
         ### classifier parameter stack
         self.paramStack = QStackedWidget(self.modelPage)
-        self.paramStack.setMinimumHeight(320)
         self.modelPageLayout.addLayout(self.classTypeLayout)
         self.modelPageLayout.addWidget(self.paramStack)
 
@@ -2241,7 +2240,7 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+        #self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
 
         self.leftPanel.resize(0.34*w, h*0.95)
         self.leftPanel.move(0.01*w, 0.02*h)
@@ -2268,7 +2267,6 @@ class App(QMainWindow):
 
 
         #We have to not plot too small or we get a crash
-        #TODO: Store these min vals somewhere?
         if w*0.28 >= 200 and h*0.44 >= 200:
             self.canvas.setMaximumWidth(w*0.28)
             self.canvas.setMaximumHeight(h*0.44)
@@ -2278,7 +2276,7 @@ class App(QMainWindow):
                 #We still somtimes get an error if by the time the
                 #occurs the size has become too small again
                 #So ignore value errors
-                #TODO: Is there a better way?
+                #We probably want to get rid of this behavior eventually. Noted in issue #
                 pass
         return
 
