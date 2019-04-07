@@ -1282,7 +1282,8 @@ class App(QMainWindow):
             data = self.data.prediction('one-hot')
 
         path = QFileDialog.getSaveFileName(self.testPage)[0]
-        self.curr_model.predict(data, path)
+        if path != '':
+            self.curr_model.predict(data, path)
 
     def finish(self):
         """
