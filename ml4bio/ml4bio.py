@@ -2241,7 +2241,7 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        #self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
 
         self.leftPanel.resize(0.34*w, h*0.95)
         self.leftPanel.move(0.01*w, 0.02*h)
