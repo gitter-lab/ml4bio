@@ -395,8 +395,6 @@ class Model:
 		elif option == 'test':
 			X = self.test_X
 			y = self.test_y
-		
-		print(X)
 
 		b1 = self.X.iloc[:, 0]
 		b2 = self.X.iloc[:, 1]
