@@ -395,6 +395,8 @@ class Model:
 		elif option == 'test':
 			X = self.test_X
 			y = self.test_y
+		
+		print(X)
 
 		b1 = self.X.iloc[:, 0]
 		b2 = self.X.iloc[:, 1]
@@ -446,6 +448,8 @@ class Model:
 		ax.set_ylim(md2.min(), md2.max())
 		ax.set_xticks(())
 		ax.set_yticks(())
+		ax.set_xlabel(X.columns[0])
+		ax.set_ylabel(X.columns[1])
 
 		canvas.figure.tight_layout()
 		canvas.draw()
