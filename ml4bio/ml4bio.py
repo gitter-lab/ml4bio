@@ -684,7 +684,7 @@ class App(QMainWindow):
         self.lrMultiClassComboBox.setCurrentIndex(0)
         self.lrClassWeightComboBox.setCurrentIndex(0)
         self.lrTolLineEdit.setText('1e-3')
-        self.lrMaxIterLineEdit.setText('500')
+        self.lrMaxIterLineEdit.setText('1000')
 
     def update_logistic_regression(self):
         """
@@ -1765,7 +1765,7 @@ class App(QMainWindow):
         self.lrTolLineEdit = QLineEdit('1e-3', self.lrPage)
         self.lrMaxIterLabel = QLabel('max_iter:', self.lrPage)
         self.lrMaxIterLabel.setMinimumWidth(60)
-        self.lrMaxIterLineEdit = QLineEdit('500', self.lrPage)
+        self.lrMaxIterLineEdit = QLineEdit('1000', self.lrPage)
 
         self.lrDoc = QLabel("<a href=\"http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html\">Documentation</a>")
         self.lrDoc.setAlignment(Qt.AlignRight)
