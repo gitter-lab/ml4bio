@@ -1660,7 +1660,7 @@ class App(QMainWindow):
         self.rfCriterionComboBox = QComboBox(self.rfPage)
         self.rfCriterionComboBox.addItem('gini')
         self.rfCriterionComboBox.addItem('entropy')
-        self.rfNumEstimatorsSpinBox = self.spin_box(10, 2, 20, 1, self.rfPage)
+        self.rfNumEstimatorsSpinBox = self.spin_box(10, 2, 50, 1, self.rfPage)
         self.rfMaxFeaturesComboBox = QComboBox(self.rfPage)
         self.rfMaxFeaturesComboBox.addItem('sqrt')
         self.rfMaxFeaturesComboBox.addItem('log2')
