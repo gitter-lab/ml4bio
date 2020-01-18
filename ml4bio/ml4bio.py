@@ -684,7 +684,7 @@ class App(QMainWindow):
         self.lrMultiClassComboBox.setCurrentIndex(0)
         self.lrClassWeightComboBox.setCurrentIndex(0)
         self.lrTolLineEdit.setText('1e-3')
-        self.lrMaxIterLineEdit.setText('500')
+        self.lrMaxIterLineEdit.setText('1000')
 
     def update_logistic_regression(self):
         """
@@ -1660,7 +1660,7 @@ class App(QMainWindow):
         self.rfCriterionComboBox = QComboBox(self.rfPage)
         self.rfCriterionComboBox.addItem('gini')
         self.rfCriterionComboBox.addItem('entropy')
-        self.rfNumEstimatorsSpinBox = self.spin_box(10, 2, 20, 1, self.rfPage)
+        self.rfNumEstimatorsSpinBox = self.spin_box(10, 2, 50, 1, self.rfPage)
         self.rfMaxFeaturesComboBox = QComboBox(self.rfPage)
         self.rfMaxFeaturesComboBox.addItem('sqrt')
         self.rfMaxFeaturesComboBox.addItem('log2')
@@ -1765,7 +1765,7 @@ class App(QMainWindow):
         self.lrTolLineEdit = QLineEdit('1e-3', self.lrPage)
         self.lrMaxIterLabel = QLabel('max_iter:', self.lrPage)
         self.lrMaxIterLabel.setMinimumWidth(60)
-        self.lrMaxIterLineEdit = QLineEdit('500', self.lrPage)
+        self.lrMaxIterLineEdit = QLineEdit('1000', self.lrPage)
 
         self.lrDoc = QLabel("<a href=\"http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html\">Documentation</a>")
         self.lrDoc.setAlignment(Qt.AlignRight)
@@ -2241,7 +2241,7 @@ class App(QMainWindow):
         self.rocRadioButton.toggled.connect(self.plot)
         self.prRadioButton.toggled.connect(self.plot)
 
-        self.setWindowTitle('ML4Bio (version {})'.format(ml4bio.__version__))
+        self.setWindowTitle('ml4bio (version {})'.format(ml4bio.__version__))
 
         self.leftPanel.resize(0.34*w, h*0.95)
         self.leftPanel.move(0.01*w, 0.02*h)
