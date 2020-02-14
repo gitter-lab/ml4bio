@@ -906,12 +906,13 @@ class App(QMainWindow):
             self.splitSpinBox.setValue(20)
             self.splitCheckBox.setChecked(True)
             self.validationFrame.setDisabled(True)
+            self.holdoutRadioButton.setChecked(True)
             self.holdoutSpinBox.setValue(20)
-            self.holdoutSpinBox.setDisabled(True)
-            self.cvRadioButton.setChecked(True)
             self.cvSpinBox.setValue(5)
+            self.cvSpinBox.setDisabled(True)
             self.validationCheckBox.setChecked(True)
             self.testBackPushButton.setEnabled(True)
+            self.dataNextPushButton.setDisabled(True)
 
         # remove trained classifiers
         if option == 'models':
