@@ -906,12 +906,13 @@ class App(QMainWindow):
             self.splitSpinBox.setValue(20)
             self.splitCheckBox.setChecked(True)
             self.validationFrame.setDisabled(True)
+            self.holdoutRadioButton.setChecked(True)
             self.holdoutSpinBox.setValue(20)
-            self.holdoutSpinBox.setDisabled(True)
-            self.cvRadioButton.setChecked(True)
             self.cvSpinBox.setValue(5)
+            self.cvSpinBox.setDisabled(True)
             self.validationCheckBox.setChecked(True)
             self.testBackPushButton.setEnabled(True)
+            self.dataNextPushButton.setDisabled(True)
 
         # remove trained classifiers
         if option == 'models':
@@ -1443,6 +1444,7 @@ class App(QMainWindow):
 
         ### load labeled data
         self.labeledDataLabel = self.title('Labeled Data (.csv):', self.dataPage)
+        self.labeledDataLabel.setToolTip('Data used to train the classifier in Step 2')
         self.labeledFilePushButton = QPushButton('Select File...', self.dataPage)
         self.labeledFilePushButton.setIcon(self.openIcon)
         self.labeledFilePushButton.setMaximumWidth(140)
@@ -1458,6 +1460,7 @@ class App(QMainWindow):
 
         ### load unlabeled data
         self.unlabeledDataLabel = self.title('Unlabeled Data (.csv):', self.dataPage)
+        self.unlabeledDataLabel.setToolTip('Optional data for which the classifer will predict labels in Step 3')
         self.unlabeledFilePushButton = QPushButton('Select File...', self.dataPage)
         self.unlabeledFilePushButton.setIcon(self.openIcon)
         self.unlabeledFilePushButton.setMaximumWidth(140)
@@ -1474,6 +1477,7 @@ class App(QMainWindow):
 
         ### data summary
         self.dataSummaryLabel = self.title('Data Summary:', self.dataPage)
+        self.dataSummaryLabel.setToolTip('Properties of the labeled data and optional unlabeled data')
         self.data_summary_ = QTreeWidget(self.dataPage)
         self.data_summary_.setColumnCount(2)
         self.data_summary_.setHeaderHidden(True)
@@ -1483,6 +1487,7 @@ class App(QMainWindow):
 
         ### train/test split
         self.trainTestLabel = self.title('Train/Test Split:', self.dataPage)
+        self.trainTestLabel.setToolTip('How much of the labeled data to save to test the final classifier')
         self.splitFrame = QFrame(self.dataPage)
         self.splitFrame.setAutoFillBackground(True)
         self.splitFrame.setDisabled(True)
@@ -1490,6 +1495,7 @@ class App(QMainWindow):
         self.splitSpinBox.setMaximumWidth(60)
         self.splitLabel = QLabel('% for test', self.splitFrame)
         self.splitCheckBox = QCheckBox('Stratified Sampling', self.splitFrame)
+        self.splitCheckBox.setToolTip('If checked, draw test samples according to class proportions')
         self.splitCheckBox.setChecked(True)
 
         self.dataPageLayout.addWidget(self.trainTestLabel)
@@ -1503,13 +1509,17 @@ class App(QMainWindow):
 
         ### validation methodology
         self.validationLabel = self.title('Validation Methodology:', self.dataPage)
+        self.validationLabel.setToolTip('What strategy to use for selecting a classifier and hyperparameters using validation samples')
         self.validationFrame = QFrame(self.dataPage)
         self.validationFrame.setAutoFillBackground(True)
         self.validationFrame.setDisabled(True)
         self.holdoutRadioButton = QRadioButton('Holdout Validation', self.validationFrame)
+        self.holdoutRadioButton.setToolTip('Set aside a single fraction of the training data')
         self.holdoutRadioButton.setChecked(True)
         self.cvRadioButton = QRadioButton('K-Fold Cross-Validation', self.validationFrame)
+        self.cvRadioButton.setToolTip('Divide the training data into k groups and iteratively use one group for validation and the rest for training')
         self.looRadioButton = QRadioButton('Leave-One-Out Validation', self.validationFrame)
+        self.looRadioButton.setToolTip('Special case of k-fold cross-validation where k is the number of samples')
         self.holdoutSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.cvSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         self.looSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
@@ -1519,6 +1529,7 @@ class App(QMainWindow):
         self.cvSpinBox = self.spin_box(5, 2, 10, 1, self.validationFrame)
         self.cvSpinBox.setDisabled(True)
         self.validationCheckBox = QCheckBox('Stratified Sampling', self.validationFrame)
+        self.validationCheckBox.setToolTip('If checked, draw validation samples according to class proportions')
         self.validationCheckBox.setChecked(True)
         self.holdoutLabel = QLabel('% for validation', self.validationFrame)
         self.cvLabel = QLabel('folds', self.validationFrame)
