@@ -1,7 +1,7 @@
-language: python
-
-python:
-  - "3.5"
+dist: xenial
+# https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-xvfb-to-run-tests-that-require-a-gui
+services:
+  - xvfb
 
 notifications:
   email: false
@@ -19,3 +19,4 @@ install:
 script:
   # no test cases yet so only test the import
   - python -c "import ml4bio; print(ml4bio.__version__)"
+  - ml4bio &
