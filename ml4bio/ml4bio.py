@@ -2296,10 +2296,11 @@ def main():
     """
     Entry point for console_scripts in setup.py.
     """
+    print('Starting ml4bio version {}'.format(ml4bio.__version__), flush=True)
+
     app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
-    print('Starting ml4bio version {}'.format(ml4bio.__version__))
     main()
