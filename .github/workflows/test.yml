@@ -28,8 +28,8 @@ jobs:
         run: python -c "import ml4bio; print(ml4bio.__version__)"
       # Tests the ml4bio command line command in headless mode on Linux
       - name: Test ml4bio command
-#        shell: bash --login {0}
+        shell: bash --login {0}
         if: runner.os == 'Linux'
-        uses: GabrielBB/xvfb-action@v1
-        with:
-          run: ml4bio &
+        run: |
+          sudo apt-get install xvfb
+          xvfb-run --auto-servernum ml4bio &
