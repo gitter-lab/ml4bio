@@ -31,4 +31,4 @@ jobs:
         shell: bash --login {0}
         if: runner.os == 'Linux'
         run: |
-          xvfb-run --auto-servernum ml4bio &
+          xvfb-run --auto-servernum ml4bio1 &
