@@ -1,0 +1,28 @@
+name: Test ml4bio
+on:
+- push
+- pull_request
+jobs:
+  Test:
+    name: Test ml4bio
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install conda environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: ml4bio
+          environment-file: conda_env.yml
+          auto-activate-base: false
+          miniconda-version: 'latest'
+      - name: Install ml4bio
+        shell: bash --login {0}
+        run: pip install .
+      # Tests that the ml4bio version is accessible
+      - name: Print ml4bio version
+        shell: bash --login {0}
+        run: python -c "import ml4bio; print(ml4bio.__version__)"
