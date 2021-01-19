@@ -1,5 +1,6 @@
 # ml4bio
 [![PyPI](https://img.shields.io/pypi/v/ml4bio.svg)](https://pypi.org/project/ml4bio/)
+[![Test ml4bio](https://github.com/gitter-lab/ml4bio/workflows/Test%20ml4bio/badge.svg)](https://github.com/gitter-lab/ml4bio/actions?query=workflow%3A%22Test+ml4bio%22)
 
 This packge is a graphical interface wrapper for sklearn classification.
 It is intended to be used with the [ml-bio-workshop](https://github.com/gitter-lab/ml-bio-workshop) training materials.
