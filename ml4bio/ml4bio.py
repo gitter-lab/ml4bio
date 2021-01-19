@@ -2301,4 +2301,5 @@ def main():
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
+    print('Starting ml4bio version {}'.format(ml4bio.__version__))
     main()
