@@ -26,9 +26,3 @@ jobs:
       - name: Print ml4bio version
         shell: bash --login {0}
         run: python -c "import ml4bio; print(ml4bio.__version__)"
-      # Tests the ml4bio command line command in headless mode on Linux
-      - name: Test ml4bio command
-        shell: bash --login {0}
-        if: runner.os == 'Linux'
-        run: |
-          xvfb-run --auto-servernum ml4bio1 &
