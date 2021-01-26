@@ -18,8 +18,8 @@ import ml4bio
 from ml4bio.data import Data
 from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
 
-MIN_SAMPLES = 20
-MAX_SAMPLES = 1000
+MIN_LOAD_SAMPLES = 20
+MAX_LOAD_SAMPLES = 1000
 
 #Setup for high dpi displays
 #This code has to be outside any function
@@ -558,9 +558,9 @@ class App(QMainWindow):
         feature names are accepted.
 
         If the data is labeled, the label column must be the last column,
-        and there must be at least MIN_SAMPLES samples. An exception will be raised
-        if fewer than MIN_SAMPLES samples are present. A warning will be raised if
-        fewer than MAX_SAMPLES are present.
+        and there must be at least MIN_LOAD_SAMPLES samples. An exception will be raised
+        if fewer than MIN_LOAD_SAMPLES samples are present. A warning will be raised if
+        fewer than MAX_LOAD_SAMPLES are present.
 
         If the data is unlabeled, the feature names must match those of the
         labeled data. Extra white spaces are not allowed. An exception will
@@ -580,12 +580,12 @@ class App(QMainWindow):
                     self.error('format')
                     return
                 # exception: too few samples
-                if self.data.num_samples() < MIN_SAMPLES:
+                if self.data.num_samples() < MIN_LOAD_SAMPLES:
                     self.error('min_num_samples')
                     return
                 # warning: too many samples
                 # still load the data and let the user proceed
-                elif self.data.num_samples() > MAX_SAMPLES:
+                elif self.data.num_samples() > MAX_LOAD_SAMPLES:
                     self.warn('max_num_samples')
 
                 # once labeled data is successfully imported,
@@ -1351,7 +1351,7 @@ class App(QMainWindow):
         elif flag == 'test':
             msg = 'Model selection on test data may lead to an overfit model.'
         elif flag == 'max_num_samples':
-            msg = 'Data loaded, but more than {} samples may lead to slow training.'.format(MAX_SAMPLES)
+            msg = 'Data loaded, but more than {} samples may lead to slow training.'.format(MAX_LOAD_SAMPLES)
         self.warn_box.setText(msg)
 
     def error_message(self, flag):
@@ -1364,7 +1364,7 @@ class App(QMainWindow):
         if flag == 'format':
             msg = 'Wrong data format. Only .csv is accepted.'
         elif flag == 'min_num_samples':
-            msg = 'Too few samples. At least {} samples are required.'.format(MIN_SAMPLES)
+            msg = 'Too few samples. At least {} samples are required.'.format(MIN_LOAD_SAMPLES)
         elif flag == 'features':
             msg = 'Feature names do not match.'
         elif flag == 'max_depth':
