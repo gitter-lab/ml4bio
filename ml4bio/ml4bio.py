@@ -581,9 +581,13 @@ class App(QMainWindow):
             if labeled:
                 try:
                     self.data = Data(path)
-                # exception: wrong data format
-                except:
-                    self.error('format')
+                except Exception as err:
+                    # exception: missing label column
+                    if 'Missing labels' in repr(err):
+                        self.error('label')
+                    # exception: wrong data format
+                    else:
+                        self.error('format')
                     return
                 # exception: too few samples
                 if self.data.num_samples() < MIN_LOAD_SAMPLES:
@@ -1369,6 +1373,8 @@ class App(QMainWindow):
         """
         if flag == 'format':
             msg = 'Wrong data format. Only .csv is accepted.'
+        elif flag == 'label':
+            msg = 'Must provide one or more feature columns and a label column.'
         elif flag == 'min_num_samples':
             msg = 'Too few samples. At least {} samples are required.'.format(MIN_LOAD_SAMPLES)
         elif flag == 'features':
