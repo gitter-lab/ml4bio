@@ -18,6 +18,9 @@ import ml4bio
 from ml4bio.data import Data
 from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
 
+MIN_SAMPLES = 20
+MAX_SAMPLES = 1000
+
 #Setup for high dpi displays
 #This code has to be outside any function
 if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
@@ -555,8 +558,9 @@ class App(QMainWindow):
         feature names are accepted.
 
         If the data is labeled, the label column must be the last column,
-        and there must be at least 20 samples. An exception will be raised
-        if fewer than 20 samples are present.
+        and there must be at least MIN_SAMPLES samples. An exception will be raised
+        if fewer than MIN_SAMPLES samples are present. A warning will be raised if
+        fewer than MAX_SAMPLES are present.
 
         If the data is unlabeled, the feature names must match those of the
         labeled data. Extra white spaces are not allowed. An exception will
@@ -575,10 +579,14 @@ class App(QMainWindow):
                 except:
                     self.error('format')
                     return
-                # exception: too few samples (cutoff: 20)
-                if self.data.num_samples() < 20:
-                    self.error('num_samples')
+                # exception: too few samples
+                if self.data.num_samples() < MIN_SAMPLES:
+                    self.error('min_num_samples')
                     return
+                # warning: too many samples
+                # still load the data and let the user proceed
+                elif self.data.num_samples() > MAX_SAMPLES:
+                    self.warn('max_num_samples')
 
                 # once labeled data is successfully imported,
                 # enable subsequent operations.
@@ -1281,7 +1289,7 @@ class App(QMainWindow):
 
     def finish(self):
         """
-        Finishs analyzing the current datasets.
+        Finishes analyzing the current datasets.
         Asks user for future action (quit or start a new analysis).
         """
         msg = 'Do you want to analyze more data?'
@@ -1342,6 +1350,8 @@ class App(QMainWindow):
             msg += 'Consider hold-out validation or k-fold cross-validation.'
         elif flag == 'test':
             msg = 'Model selection on test data may lead to an overfit model.'
+        elif flag == 'max_num_samples':
+            msg = 'Data loaded, but more than {} samples may lead to slow training.'.format(MAX_SAMPLES)
         self.warn_box.setText(msg)
 
     def error_message(self, flag):
@@ -1353,8 +1363,8 @@ class App(QMainWindow):
         """
         if flag == 'format':
             msg = 'Wrong data format. Only .csv is accepted.'
-        elif flag == 'num_samples':
-            msg = 'Too few samples. At least 20 samples are required.'
+        elif flag == 'min_num_samples':
+            msg = 'Too few samples. At least {} samples are required.'.format(MIN_SAMPLES)
         elif flag == 'features':
             msg = 'Feature names do not match.'
         elif flag == 'max_depth':
@@ -1404,22 +1414,27 @@ class App(QMainWindow):
         self.info_box = QMessageBox()
         self.info_box.setIcon(QMessageBox.Information)
         self.info_box.setStandardButtons(QMessageBox.Ok)
+        self.info_box.setWindowTitle('Information')
 
         self.warn_box = QMessageBox()
         self.warn_box.setIcon(QMessageBox.Warning)
-        self.warn_box.setStandardButtons(QMessageBox.Close | QMessageBox.Ignore)
+        self.warn_box.setStandardButtons(QMessageBox.Ok)
+        self.warn_box.setWindowTitle('Warning')
 
         self.err_box = QMessageBox()
         self.err_box.setIcon(QMessageBox.Critical)
         self.err_box.setStandardButtons(QMessageBox.Ok)
+        self.err_box.setWindowTitle('Error')
 
         self.test_box = QMessageBox()
         self.test_box.setIcon(QMessageBox.Question)
         self.test_box.setStandardButtons(QMessageBox.Cancel | QMessageBox.Yes)
+        self.test_box.setWindowTitle('Clear')
 
         self.finish_box = QMessageBox()
         self.finish_box.setIcon(QMessageBox.Question)
         self.finish_box.setStandardButtons(QMessageBox.Cancel | QMessageBox.No | QMessageBox.Yes)
+        self.finish_box.setWindowTitle('Finish')
 
         self.font = QFont()         # font for table and summary
         self.font.setPointSize(10)
@@ -2290,7 +2305,7 @@ def main():
     Entry point for console_scripts in setup.py.
     """
     app = QApplication(sys.argv)
-    ex = App()
+    App()
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
