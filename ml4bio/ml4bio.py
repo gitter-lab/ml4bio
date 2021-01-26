@@ -1,6 +1,12 @@
 import sys
+import warnings
 from pandas import errors
-from sklearn import tree, ensemble, neighbors, linear_model, neural_network, svm, naive_bayes, exceptions
+from sklearn import tree, neighbors, linear_model, neural_network, svm, naive_bayes, exceptions
+# Ignore specific DeprecationWarning as in
+# https://stackoverflow.com/questions/879173/how-to-ignore-deprecation-warnings-in-python
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore",category=DeprecationWarning)
+    from sklearn import ensemble
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.figure import Figure
 from PyQt5 import QtCore
