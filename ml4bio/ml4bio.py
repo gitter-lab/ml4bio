@@ -1,7 +1,5 @@
-import os, sys, warnings, webbrowser
-import pandas as pd
+import sys
 from pandas import errors
-import numpy as np
 from sklearn import tree, ensemble, neighbors, linear_model, neural_network, svm, naive_bayes, exceptions
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.figure import Figure
@@ -19,11 +17,6 @@ import PyQt5.QtWidgets as QtWidgets
 import ml4bio
 from ml4bio.data import Data
 from ml4bio.model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-from ml4bio.model_metrics import ModelMetrics
-
-# from data import Data
-# from model import Model, DecisionTree, RandomForest, KNearestNeighbors, LogisticRegression, NeuralNetwork, SVM, NaiveBayes
-# from model_metrics import ModelMetrics
 
 #Setup for high dpi displays
 #This code has to be outside any function
