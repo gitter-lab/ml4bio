@@ -9,6 +9,9 @@ dist/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+# PyCharm
+.idea
+
 # Misc temporary files
 *.bak
 ~$*
