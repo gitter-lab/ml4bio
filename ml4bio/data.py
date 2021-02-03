@@ -71,7 +71,10 @@ class Data:
 		feature_names = self.labeled_data.columns[0: self.num_features_]
 		num_continuous_features = 0
 		num_discrete_features = 0
-		
+
+		if self.num_features_ <= 1:
+			raise ValueError('Missing labels')
+
 		# determine feature types
 		self.individual_feature_type = dict()
 		for f in feature_names:
@@ -101,7 +104,7 @@ class Data:
 		label_col = self.labeled_data.iloc[:, self.num_features_]
 		classes = list(set(label_col))
 		self.num_classes_ = len(classes)
-		
+
 		# count number of samples that belong to each class
 		self.class_num_samples = dict()
 		for c in classes:
@@ -120,13 +123,13 @@ class Data:
 			self.unlabeled_data = pd.read_csv(path, sep=None, engine='python')
 		except:
 			raise
-		
+
 		labeled_feature_names = list(self.labeled_data.columns[0: self.num_features()])
 		unlabeled_feature_names = list(self.unlabeled_data.columns)
 		if labeled_feature_names != unlabeled_feature_names:
 			self.unlabeled_data = None
-			raise ValueError()
-		
+			raise ValueError('Feature names do not match')
+
 		self.unlabeled_name = os.path.basename(path)
 		self.unlabeled_num_samples = self.unlabeled_data.shape[0]
 
@@ -182,7 +185,7 @@ class Data:
 		integer_encoded_X = self.integer_encoded_labeled_data
 		one_hot_encoded_X = self.one_hot_encoded_labeled_data
 		y = self.labeled_data.iloc[:, self.num_features()]
-		
+
 		if stratify:
 			s = y
 		else:
@@ -270,7 +273,7 @@ class Data:
 
 	def summary(self, view):
 		"""
-		Displays a summary of the loaded data. This includes 
+		Displays a summary of the loaded data. This includes
 
 			- number of samples (total and classwise)
 			- number of features
@@ -288,7 +291,7 @@ class Data:
 		labeled_samples_item = QTreeWidgetItem(samples_item)
 		labeled_samples_item.setText(0, 'labeled')
 		labeled_samples_item.setText(1, str(self.num_samples()))
-		
+
 		# show number of samples that belong to each class
 		class_num_samples = self.num_samples('classwise')
 		for c in class_num_samples:
@@ -296,7 +299,7 @@ class Data:
 			class_samples_item.setText(0, str(c))
 			class_samples_item.setText(1, str(class_num_samples[c]))
 			class_samples_item.setToolTip(0, str(c))
-		
+
 		if self.unlabeled_data is not None:
 			unlabeled_samples_item = QTreeWidgetItem(samples_item)
 			unlabeled_samples_item.setText(0, 'unlabeled')
@@ -305,7 +308,7 @@ class Data:
 		features_item = QTreeWidgetItem(view)
 		features_item.setText(0, 'Features')
 		features_item.setText(1, str(self.num_features()))
-		
+
 		# show type of each feature
 		feature_type = self.feature_type(option='individual')
 		for f in feature_type:
@@ -334,7 +337,7 @@ class Data:
 		Returns encoded test data.
 
 			- option='integer': integer-encoded data
-			- option='one-hot': one-hot-encoded data	
+			- option='one-hot': one-hot-encoded data
 
 		:param option: 'integer' or 'one-hot'
 		:type option: str
