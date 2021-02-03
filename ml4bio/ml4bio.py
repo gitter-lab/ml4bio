@@ -983,36 +983,8 @@ class App(QMainWindow):
         :param model: trained classifier
         :type model: sklearn classifier object
         """
-        # training failed (e.g. invalid hyperparameters or model did not converge)
-        if model is None:
-            self.trainStatusLabel.setText('Training failed.')
-
-        else:
-            self.trainStatusLabel.setText('Training completed.')
-
-            # set user-supplied classifier name.
-            name = self.classNameLineEdit.text().strip()
-            if name != '':
-                if name in self.models:
-                    self.error('name')
-                    return
-                model.set_name(name)
-
-            # set user-supplied cooment on classifier.
-            model.set_comment(self.classCommentTextEdit.toPlainText().strip())
-
-            self.classNameLineEdit.clear()
-            self.classCommentTextEdit.clear()
-
-            self.models[model.name()] = model   # add to the collection of classifiers.
-
-            # show performance metrics with respect to the currently chosen data type.
-            if self.performanceComboBox.currentIndex() == 0:
-                self.push(model, 'val')
-            else:
-                self.push(model, 'train')
-
         # activate the 2nd page so that user can train new classifiers.
+        # re-enable these buttons even if training failed
         self.classResetPushButton.setEnabled(True)
         self.classTrainPushButton.setEnabled(True)
         self.classNameLineEdit.setEnabled(True)
@@ -1021,6 +993,35 @@ class App(QMainWindow):
         self.classNextPushButton.setEnabled(True)
         self.classTypeComboBox.setEnabled(True)
         self.paramStack.setEnabled(True)
+
+        # training failed (e.g. invalid hyperparameters or model did not converge)
+        if model is None:
+            self.trainStatusLabel.setText('Training failed.')
+            return
+
+        self.trainStatusLabel.setText('Training completed.')
+
+        # set user-supplied classifier name.
+        name = self.classNameLineEdit.text().strip()
+        if name != '':
+            if name in self.models:
+                self.error('name')
+                return
+            model.set_name(name)
+
+        # set user-supplied cooment on classifier.
+        model.set_comment(self.classCommentTextEdit.toPlainText().strip())
+
+        self.classNameLineEdit.clear()
+        self.classCommentTextEdit.clear()
+
+        self.models[model.name()] = model   # add to the collection of classifiers.
+
+        # show performance metrics with respect to the currently chosen data type.
+        if self.performanceComboBox.currentIndex() == 0:
+            self.push(model, 'val')
+        else:
+            self.push(model, 'train')
 
     def push(self, model, option):
         """
