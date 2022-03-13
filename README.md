@@ -3,7 +3,7 @@
 [![Test ml4bio](https://github.com/gitter-lab/ml4bio/workflows/Test%20ml4bio/badge.svg)](https://github.com/gitter-lab/ml4bio/actions?query=workflow%3A%22Test+ml4bio%22)
 
 This package is a graphical interface wrapper for sklearn classification.
-It is intended to be used with the [ml-bio-workshop](https://github.com/carpentries-incubator/ml4bio-workshop) training materials.
+It is intended to be used with the [ML4Bio workshop](https://github.com/carpentries-incubator/ml4bio-workshop) training materials.
 
 ## Python environment
 
@@ -25,7 +25,7 @@ The full Anaconda installation also provides all required dependencies.
 
 ## Running
 
-The ml-bio-workshop repository provides [scripts](https://github.com/carpentries-incubator/ml4bio-workshop/tree/gh-pages/scripts) for installing and launching the ml4bio GUI.
+The ML4Bio workshop repository provides [scripts](https://github.com/carpentries-incubator/ml4bio-workshop/tree/gh-pages/scripts) for installing and launching the ml4bio GUI.
 Once the ml4bio package and its dependencies have been installed, the GUI can be launched using the `ml4bio` command from the command line.
 
 ## Third party materials
