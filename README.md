@@ -18,8 +18,7 @@ Requires:
 
 See `conda_env.yml` for one set of compatible package versions.
 Create the `ml4bio` [conda environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) with the command `conda env create -f conda_env.yml`.
-On Linux, activate the environment with `source activate ml4bio`.
-On Windows, activate the environment with `activate ml4bio`.
+Activate the environment with `conda activate ml4bio`.
 
 The full Anaconda installation also provides all required dependencies.
 
@@ -27,6 +26,12 @@ The full Anaconda installation also provides all required dependencies.
 
 The ML4Bio workshop repository provides [scripts](https://github.com/carpentries-incubator/ml4bio-workshop/tree/gh-pages/scripts) for installing and launching the ml4bio GUI.
 Once the ml4bio package and its dependencies have been installed, the GUI can be launched using the `ml4bio` command from the command line.
+
+## Citation
+
+[An approachable, flexible, and practical machine learning workshop for biologists](https://doi.org/10.1101/2022.02.03.479008).  
+Chris S Magnano, Fangzhou Mu, Rosemary S Russ, Milica Cvetkovic, Debora Treu, Anthony Gitter.  
+bioRxiv, 2022. doi:10.1101/2022.02.03.479008
 
 ## Third party materials
 The icons in the `ml4bio/icons` directory were downloaded from http://thenounproject.com under the Creative Commons license.
