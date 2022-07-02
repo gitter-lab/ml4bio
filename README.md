@@ -30,9 +30,9 @@ Once the ml4bio package and its dependencies have been installed, the GUI can be
 
 ## Citation
 
-[An approachable, flexible, and practical machine learning workshop for biologists](https://doi.org/10.1101/2022.02.03.479008).  
+[An approachable, flexible and practical machine learning workshop for biologists](https://doi.org/10.1093/bioinformatics/btac233).  
 Chris S Magnano, Fangzhou Mu, Rosemary S Russ, Milica Cvetkovic, Debora Treu, Anthony Gitter.  
-bioRxiv, 2022. doi:10.1101/2022.02.03.479008
+*Bioinformatics*, 38:Supplement_1, 2022.
 
 ## Third party materials
 The icons in the `ml4bio/icons` directory were downloaded from http://thenounproject.com under the Creative Commons license.
