@@ -1415,7 +1415,7 @@ class App(QMainWindow):
         sizeObject = QDesktopWidget().screenGeometry(-1)
         w = sizeObject.width()*0.5
         h = sizeObject.height()*0.5
-        self.resize(w, h)
+        self.resize(int(w), int(h))
 
         self.data = None
         self.val_method = 'cv'
@@ -2216,10 +2216,10 @@ class App(QMainWindow):
         self.visLayout = QHBoxLayout()
         self.visListLayout = QVBoxLayout()
         self.model_summary_ = QTreeWidget(self.rightPanel)
-        self.model_summary_.setMaximumWidth(w*0.28)
+        self.model_summary_.setMaximumWidth(int(w*0.28))
         self.model_summary_.setColumnCount(2)
         self.model_summary_.setHeaderHidden(True)
-        self.model_summary_.setColumnWidth(0, w*0.145)
+        self.model_summary_.setColumnWidth(0, int(w*0.145))
         self.model_summary_.setFont(self.font)
         self.visListLayout.addWidget(self.model_summary_)
 
@@ -2244,8 +2244,8 @@ class App(QMainWindow):
         self.visLayout.addLayout(self.visListLayout)
 
         self.canvas = FigureCanvas(Figure(figsize=(340, 340)))
-        self.canvas.setMaximumWidth(w*0.28)
-        self.canvas.setMaximumHeight(h*0.44)
+        self.canvas.setMaximumWidth(int(w*0.28))
+        self.canvas.setMaximumHeight(int(h*0.44))
 
         self.canvas.setParent(self.rightPanel)
         self.visLayout.addWidget(self.canvas)
@@ -2275,10 +2275,10 @@ class App(QMainWindow):
 
         self.setWindowTitle('ml4bio (version {})'.format(ml4bio.__version__))
 
-        self.leftPanel.resize(0.34*w, h*0.95)
-        self.leftPanel.move(0.01*w, 0.02*h)
-        self.rightPanel.resize(0.60*w, 0.95*h)
-        self.rightPanel.move(0.36*w, 0.02*h)
+        self.leftPanel.resize(int(0.34*w), int(h*0.95))
+        self.leftPanel.move(int(0.01*w), int(0.02*h))
+        self.rightPanel.resize(int(0.60*w), int(0.95*h))
+        self.rightPanel.move(int(0.36*w), int(0.02*h))
 
         self.show()
 
@@ -2289,20 +2289,20 @@ class App(QMainWindow):
         """
         w = self.width()
         h = self.height()
-        self.leftPanel.resize(0.34*w, h*0.95)
-        self.leftPanel.move(0.01*w, 0.02*h)
-        self.rightPanel.resize(0.60*w, 0.95*h)
-        self.rightPanel.move(0.36*w, 0.02*h)
+        self.leftPanel.resize(int(0.34*w), int(h*0.95))
+        self.leftPanel.move(int(0.01*w), int(0.02*h))
+        self.rightPanel.resize(int(0.60*w), int(0.95*h))
+        self.rightPanel.move(int(0.36*w), int(0.02*h))
 
         #Right panel bottom left table
-        self.model_summary_.setMaximumWidth(w*0.28)
-        self.model_summary_.setColumnWidth(0, w*0.145)
+        self.model_summary_.setMaximumWidth(int(w*0.28))
+        self.model_summary_.setColumnWidth(0, int(w*0.145))
 
 
         #We have to not plot too small or we get a crash
         if w*0.28 >= 200 and h*0.44 >= 200:
-            self.canvas.setMaximumWidth(w*0.28)
-            self.canvas.setMaximumHeight(h*0.44)
+            self.canvas.setMaximumWidth(int(w*0.28))
+            self.canvas.setMaximumHeight(int(h*0.44))
             try:
                 self.plot()
             except ValueError as ex:
