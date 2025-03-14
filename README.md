@@ -9,7 +9,7 @@ It is intended to be used with the [ML4Bio workshop](https://github.com/carpentr
 ## Python environment
 
 Requires:
-- Python 3.5
+- Python 3.12
 - pandas
 - numpy
 - sklearn
@@ -20,8 +20,6 @@ Requires:
 See `conda_env.yml` for one set of compatible package versions.
 Create the `ml4bio` [conda environment](https://conda.io/docs/user-guide/tasks/manage-environments.html) with the command `conda env create -f conda_env.yml`.
 Activate the environment with `conda activate ml4bio`.
-
-The full Anaconda installation also provides all required dependencies.
 
 ## Running
 
